@@ -19,9 +19,10 @@ pub enum InputError {
     )]
     SizeError(usize, usize),
 
-    #[display(
-        fmt = "The input format is either malformed or doesn't provide enought informations"
-    )]
+    #[display(fmt = "The size is mismatched: {} != {}", _0, _1)]
+    SizeMismatch(usize, usize),
+
+    #[display(fmt = "The input is either malformed or doesn't provide enought informations")]
     MalformedInput,
 }
 

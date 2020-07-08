@@ -3,18 +3,23 @@ extern crate derive_more;
 
 use std::process;
 
-mod error;
 mod alg;
+mod error;
+mod input;
 
 fn main() {
     /* Retrieve, parse and process the tree */
-    let (head, tail) = alg::retrieve().unwrap_or_else(|e| {
+    let (head, pipes, tail) = input::retrieve().unwrap_or_else(|e| {
         eprintln!("{}", e);
         process::exit(1)
     });
 
-    /* Print pairs */
-    for (idx, e) in head.iter().enumerate() {
-        println!("{}{}", e, tail[idx]);
+    println!("{:?} {:?} {:?}", head, pipes, tail);
+    /* Combinate with pipes */
+    let (head, tail) = alg::resolve(head, pipes, tail);
+
+    /* Print the combination according to the requested format */
+    for (idx, el) in head.iter().enumerate() {
+        println!("{}{}", el, tail[idx]);
     }
 }
