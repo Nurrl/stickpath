@@ -104,7 +104,6 @@ pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> {
         if len != w {
             return Err(InputError::SizeMismatch(len, w));
         }
-        println!("{}", id);
         if id == 0 {
             /* If head */
             head = tokenizer(line, char::is_whitespace, false)?;
