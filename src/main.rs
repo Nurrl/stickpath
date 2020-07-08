@@ -4,13 +4,17 @@ extern crate derive_more;
 use std::process;
 
 mod error;
-mod input;
+mod alg;
 
 fn main() {
-    let s = input::retrieve().unwrap_or_else(|e| {
+    /* Retrieve, parse and process the tree */
+    let (head, tail) = alg::retrieve().unwrap_or_else(|e| {
         eprintln!("{}", e);
         process::exit(1)
     });
 
-    println!("{:?}", s);
+    /* Print pairs */
+    for (idx, e) in head.iter().enumerate() {
+        println!("{}{}", e, tail[idx]);
+    }
 }

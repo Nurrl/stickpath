@@ -18,6 +18,11 @@ pub enum InputError {
         _1
     )]
     SizeError(usize, usize),
+
+    #[display(
+        fmt = "The input format is either malformed or doesn't provide enought informations"
+    )]
+    MalformedInput,
 }
 
 impl Error for InputError {}
