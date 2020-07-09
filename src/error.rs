@@ -22,8 +22,14 @@ pub enum InputError {
     #[display(fmt = "The size is mismatched: {} != {}", _0, _1)]
     SizeMismatch(usize, usize),
 
+    #[display(fmt = "The identifiers at top and bottom must be unique")]
+    UniqError,
+
     #[display(fmt = "The input is either malformed or doesn't provide enought informations")]
     MalformedInput,
+
+    #[display(fmt = "Can't resolve adjacent pipes without breaking the fabric of the universe")]
+    DoublePipe,
 }
 
 impl Error for InputError {}

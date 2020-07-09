@@ -17,3 +17,9 @@ I decided to use this crate for error management without reimplementing the **Di
 
 - **<-** Represents user inputs to `stdin`.
 - **->** Represents program output to `stdout`.
+
+```shell
+$ cargo run < data/<desired test>
+-> <Output of the stick path>
+```
+

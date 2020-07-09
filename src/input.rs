@@ -1,4 +1,6 @@
 use std::io;
+use std::hash::Hash;
+use std::collections::HashSet;
 
 use crate::error::InputError;
 
@@ -56,28 +58,40 @@ fn processline(line: String, pipes: &mut Vec<(usize, usize)>) -> Result<()> {
     let mut piped: bool = false;
     for (id, tok) in connectors.iter().enumerate() {
         /* If format is invalid */
-        if (id == 0 || id == connectors.len() - 1) && *tok != 0 as char {
-            return Err(InputError::MalformedInput);
+        if id == 0 || id == connectors.len() - 1 {
+            if *tok != 0 as char {
+                return Err(InputError::MalformedInput);
+            }
         } else if *tok == '-' {
             /* Two pipes in a row is invalid */
             if piped {
-                return Err(InputError::MalformedInput);
+                return Err(InputError::DoublePipe);
             }
             piped = true;
 
             /* Provide pipes with indexes on what to swap */
             pipes.push((id - 1, id));
-        } else {
+        } else if char::is_whitespace(*tok) {
             piped = false;
+        } else {
+            /* Other than '-' or `whitespace` is invalid */
+            return Err(InputError::MalformedInput);
         }
     }
 
     Ok(())
 }
 
-pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> {
-    let (params, _) = readline()?;
-    let (w, h) = parse!(
+fn isuniq<T>(iter: T) -> bool
+where
+    T: IntoIterator,
+    T::Item: Eq + Hash,
+{
+    let mut uniq = HashSet::new();
+    iter.into_iter().all(move |x| uniq.insert(x))
+}
+
+pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> { let (params, _) = readline()?; let (w, h) = parse!(
         params,
         char::is_whitespace,
         InputError::FormatError,
@@ -114,6 +128,11 @@ pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> {
             /* If pipes */
             processline(line, &mut pipes)?;
         }
+    }
+    /* Check for uniqueness of identifiers */
+    let concat = [&head[..], &tail[..]].concat();
+    if !isuniq(concat) {
+        return Err(InputError::UniqError);
     }
 
     Ok((head, pipes, tail))

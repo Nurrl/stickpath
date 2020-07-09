@@ -14,7 +14,7 @@ fn main() {
         process::exit(1)
     });
 
-    println!("{:?} {:?} {:?}", head, pipes, tail);
+//    println!("{:?} {:?} {:?}", head, pipes, tail);
     /* Combinate with pipes */
     let (head, tail) = alg::resolve(head, pipes, tail);
 
