@@ -1,6 +1,6 @@
-use std::io;
-use std::hash::Hash;
 use std::collections::HashSet;
+use std::hash::Hash;
+use std::io;
 
 use crate::error::InputError;
 
@@ -91,7 +91,9 @@ where
     iter.into_iter().all(move |x| uniq.insert(x))
 }
 
-pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> { let (params, _) = readline()?; let (w, h) = parse!(
+pub fn retrieve() -> Result<(Vec<char>, Vec<(usize, usize)>, Vec<char>)> {
+    let (params, _) = readline()?;
+    let (w, h) = parse!(
         params,
         char::is_whitespace,
         InputError::FormatError,
